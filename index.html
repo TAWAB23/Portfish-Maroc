@@ -1,0 +1,1773 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1.js"></script>
+        <script src="data/ZEE_2.js"></script>
+        <script src="data/Zoneconomiqueexclusive_3.js"></script>
+        <script src="data/Atlantiquenord_4.js"></script>
+        <script src="data/sudatlantique_sud_5.js"></script>
+        <script src="data/Meditemditerranne_6.js"></script>
+        <script src="data/Atlantiquecentre_7.js"></script>
+        <script src="data/LesporrtsduMaroc_8.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[21.07913803945771,-28.442086054716178],[36.14747966917364,3.1130278843976327]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_carte_0');
+        map.getPane('pane_carte_0').style.zIndex = 400;
+        var layer_carte_0 = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
+            pane: 'pane_carte_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_carte_0;
+        map.addLayer(layer_carte_0);
+        function pop_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOM_REGION'] !== null ? autolinker.link(feature.properties['NOM_REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1_0() {
+            return {
+                pane: 'pane_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1');
+        map.getPane('pane_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1').style.zIndex = 401;
+        map.getPane('pane_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1').style['mix-blend-mode'] = 'normal';
+        var layer_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1 = new L.geoJson(json_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1',
+            layerName: 'layer_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1',
+            pane: 'pane_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1',
+            onEachFeature: pop_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1,
+            style: style_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1_0,
+        });
+        bounds_group.addLayer(layer_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1);
+        map.addLayer(layer_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1);
+        function pop_ZEE_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid'] !== null ? autolinker.link(feature.properties['mrgid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['geoname'] !== null ? autolinker.link(feature.properties['geoname'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter1'] !== null ? autolinker.link(feature.properties['mrgid_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['pol_type'] !== null ? autolinker.link(feature.properties['pol_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov1'] !== null ? autolinker.link(feature.properties['mrgid_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory1'] !== null ? autolinker.link(feature.properties['territory1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter1'] !== null ? autolinker.link(feature.properties['iso_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign1'] !== null ? autolinker.link(feature.properties['sovereign1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter2'] !== null ? autolinker.link(feature.properties['mrgid_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov2'] !== null ? autolinker.link(feature.properties['mrgid_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory2'] !== null ? autolinker.link(feature.properties['territory2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter2'] !== null ? autolinker.link(feature.properties['iso_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign2'] !== null ? autolinker.link(feature.properties['sovereign2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter3'] !== null ? autolinker.link(feature.properties['mrgid_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov3'] !== null ? autolinker.link(feature.properties['mrgid_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory3'] !== null ? autolinker.link(feature.properties['territory3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter3'] !== null ? autolinker.link(feature.properties['iso_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign3'] !== null ? autolinker.link(feature.properties['sovereign3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['x_1'] !== null ? autolinker.link(feature.properties['x_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['y_1'] !== null ? autolinker.link(feature.properties['y_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_eez'] !== null ? autolinker.link(feature.properties['mrgid_eez'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['area_km2'] !== null ? autolinker.link(feature.properties['area_km2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov1'] !== null ? autolinker.link(feature.properties['iso_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov2'] !== null ? autolinker.link(feature.properties['iso_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov3'] !== null ? autolinker.link(feature.properties['iso_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov1'] !== null ? autolinker.link(feature.properties['un_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov2'] !== null ? autolinker.link(feature.properties['un_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov3'] !== null ? autolinker.link(feature.properties['un_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter1'] !== null ? autolinker.link(feature.properties['un_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter2'] !== null ? autolinker.link(feature.properties['un_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter3'] !== null ? autolinker.link(feature.properties['un_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_ZEE_2_0() {
+            return {
+                pane: 'pane_ZEE_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(180,51,53,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_ZEE_2');
+        map.getPane('pane_ZEE_2').style.zIndex = 402;
+        map.getPane('pane_ZEE_2').style['mix-blend-mode'] = 'normal';
+        var layer_ZEE_2 = new L.geoJson(json_ZEE_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ZEE_2',
+            layerName: 'layer_ZEE_2',
+            pane: 'pane_ZEE_2',
+            onEachFeature: pop_ZEE_2,
+            style: style_ZEE_2_0,
+        });
+        bounds_group.addLayer(layer_ZEE_2);
+        map.addLayer(layer_ZEE_2);
+        function pop_Zoneconomiqueexclusive_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid'] !== null ? autolinker.link(feature.properties['mrgid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['geoname'] !== null ? autolinker.link(feature.properties['geoname'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter1'] !== null ? autolinker.link(feature.properties['mrgid_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['pol_type'] !== null ? autolinker.link(feature.properties['pol_type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov1'] !== null ? autolinker.link(feature.properties['mrgid_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory1'] !== null ? autolinker.link(feature.properties['territory1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter1'] !== null ? autolinker.link(feature.properties['iso_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign1'] !== null ? autolinker.link(feature.properties['sovereign1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter2'] !== null ? autolinker.link(feature.properties['mrgid_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov2'] !== null ? autolinker.link(feature.properties['mrgid_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory2'] !== null ? autolinker.link(feature.properties['territory2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter2'] !== null ? autolinker.link(feature.properties['iso_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign2'] !== null ? autolinker.link(feature.properties['sovereign2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_ter3'] !== null ? autolinker.link(feature.properties['mrgid_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_sov3'] !== null ? autolinker.link(feature.properties['mrgid_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['territory3'] !== null ? autolinker.link(feature.properties['territory3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_ter3'] !== null ? autolinker.link(feature.properties['iso_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['sovereign3'] !== null ? autolinker.link(feature.properties['sovereign3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['x_1'] !== null ? autolinker.link(feature.properties['x_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['y_1'] !== null ? autolinker.link(feature.properties['y_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mrgid_eez'] !== null ? autolinker.link(feature.properties['mrgid_eez'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['area_km2'] !== null ? autolinker.link(feature.properties['area_km2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov1'] !== null ? autolinker.link(feature.properties['iso_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov2'] !== null ? autolinker.link(feature.properties['iso_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['iso_sov3'] !== null ? autolinker.link(feature.properties['iso_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov1'] !== null ? autolinker.link(feature.properties['un_sov1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov2'] !== null ? autolinker.link(feature.properties['un_sov2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_sov3'] !== null ? autolinker.link(feature.properties['un_sov3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter1'] !== null ? autolinker.link(feature.properties['un_ter1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter2'] !== null ? autolinker.link(feature.properties['un_ter2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['un_ter3'] !== null ? autolinker.link(feature.properties['un_ter3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Zoneconomiqueexclusive_3_0() {
+            return {
+                pane: 'pane_Zoneconomiqueexclusive_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(180,51,51,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Zoneconomiqueexclusive_3');
+        map.getPane('pane_Zoneconomiqueexclusive_3').style.zIndex = 403;
+        map.getPane('pane_Zoneconomiqueexclusive_3').style['mix-blend-mode'] = 'normal';
+        var layer_Zoneconomiqueexclusive_3 = new L.geoJson(json_Zoneconomiqueexclusive_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Zoneconomiqueexclusive_3',
+            layerName: 'layer_Zoneconomiqueexclusive_3',
+            pane: 'pane_Zoneconomiqueexclusive_3',
+            onEachFeature: pop_Zoneconomiqueexclusive_3,
+            style: style_Zoneconomiqueexclusive_3_0,
+        });
+        bounds_group.addLayer(layer_Zoneconomiqueexclusive_3);
+        map.addLayer(layer_Zoneconomiqueexclusive_3);
+        function pop_Atlantiquenord_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Groupes AnimaL'] !== null ? autolinker.link(feature.properties['Groupes AnimaL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Famille'] !== null ? autolinker.link(feature.properties['Famille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom scientifique'] !== null ? autolinker.link(feature.properties['Nom scientifique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom commun'] !== null ? autolinker.link(feature.properties['Nom commun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zone atlantique sud'] !== null ? autolinker.link(feature.properties['Zone atlantique sud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distribution bathymetrique'] !== null ? autolinker.link(feature.properties['Distribution bathymetrique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Regime alimentaire'] !== null ? autolinker.link(feature.properties['Regime alimentaire'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taille'] !== null ? autolinker.link(feature.properties['Taille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Engins de p�che'] !== null ? autolinker.link(feature.properties['Engins de p�che'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Habitat'] !== null ? autolinker.link(feature.properties['Habitat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Atlantiquenord_4_0(feature) {
+            switch(String(feature.properties['Nom commun'])) {
+                case 'Bar commun':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Chinchard commun':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade grise':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade royale':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,68,60,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Loup de mer':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Maquereau commun':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pageot commun':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: -0.00872665,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pagre commun':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: -0.043633250000000005,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [45.599999999999994, 45.599999999999994]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sardine commune':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sole commune':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Thon rouge':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquenord_4.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case '�':
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,61,131,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Atlantiquenord_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(203,100,189,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Atlantiquenord_4');
+        map.getPane('pane_Atlantiquenord_4').style.zIndex = 404;
+        map.getPane('pane_Atlantiquenord_4').style['mix-blend-mode'] = 'normal';
+        var layer_Atlantiquenord_4 = new L.geoJson(json_Atlantiquenord_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Atlantiquenord_4',
+            layerName: 'layer_Atlantiquenord_4',
+            pane: 'pane_Atlantiquenord_4',
+            onEachFeature: pop_Atlantiquenord_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Atlantiquenord_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Atlantiquenord_4);
+        map.addLayer(layer_Atlantiquenord_4);
+        function pop_sudatlantique_sud_5(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Groupes AnimaL'] !== null ? autolinker.link(feature.properties['Groupes AnimaL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Famille'] !== null ? autolinker.link(feature.properties['Famille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom scientifique'] !== null ? autolinker.link(feature.properties['Nom scientifique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom commun'] !== null ? autolinker.link(feature.properties['Nom commun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_5'] !== null ? autolinker.link(feature.properties['field_5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zone atlantique nord'] !== null ? autolinker.link(feature.properties['Zone atlantique nord'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distribution bathymetrique'] !== null ? autolinker.link(feature.properties['Distribution bathymetrique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Regime alimentaire'] !== null ? autolinker.link(feature.properties['Regime alimentaire'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taille'] !== null ? autolinker.link(feature.properties['Taille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Engins de p�che'] !== null ? autolinker.link(feature.properties['Engins de p�che'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Habitat'] !== null ? autolinker.link(feature.properties['Habitat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_sudatlantique_sud_5_0() {
+            return {
+                pane: 'pane_sudatlantique_sud_5',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(61,128,53,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,176,74,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_sudatlantique_sud_5');
+        map.getPane('pane_sudatlantique_sud_5').style.zIndex = 405;
+        map.getPane('pane_sudatlantique_sud_5').style['mix-blend-mode'] = 'normal';
+        var layer_sudatlantique_sud_5 = new L.geoJson(json_sudatlantique_sud_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_sudatlantique_sud_5',
+            layerName: 'layer_sudatlantique_sud_5',
+            pane: 'pane_sudatlantique_sud_5',
+            onEachFeature: pop_sudatlantique_sud_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_sudatlantique_sud_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_sudatlantique_sud_5);
+        map.addLayer(layer_sudatlantique_sud_5);
+        function pop_Meditemditerranne_6(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Groupes AnimaL'] !== null ? autolinker.link(feature.properties['Groupes AnimaL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Famille'] !== null ? autolinker.link(feature.properties['Famille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom scientifique'] !== null ? autolinker.link(feature.properties['Nom scientifique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom commun'] !== null ? autolinker.link(feature.properties['Nom commun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zone mediterranee'] !== null ? autolinker.link(feature.properties['Zone mediterranee'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distribution bathymetrique'] !== null ? autolinker.link(feature.properties['Distribution bathymetrique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Regime alimentaire'] !== null ? autolinker.link(feature.properties['Regime alimentaire'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taille'] !== null ? autolinker.link(feature.properties['Taille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Engins de p�che'] !== null ? autolinker.link(feature.properties['Engins de p�che'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Habitat'] !== null ? autolinker.link(feature.properties['Habitat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Meditemditerranne_6_0(feature) {
+            switch(String(feature.properties['Nom commun'])) {
+                default:
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Bar commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Chinchard commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade grise':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade royale':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Loup de mer':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Maquereau commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Merlu commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pageot commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pagre commun':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sabre argente':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sardine commune':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sole commune':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Thon rouge':
+                    return {
+                pane: 'pane_Meditemditerranne_6',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Meditemditerranne_6.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Meditemditerranne_6');
+        map.getPane('pane_Meditemditerranne_6').style.zIndex = 406;
+        map.getPane('pane_Meditemditerranne_6').style['mix-blend-mode'] = 'normal';
+        var layer_Meditemditerranne_6 = new L.geoJson(json_Meditemditerranne_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Meditemditerranne_6',
+            layerName: 'layer_Meditemditerranne_6',
+            pane: 'pane_Meditemditerranne_6',
+            onEachFeature: pop_Meditemditerranne_6,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, style_Meditemditerranne_6_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Meditemditerranne_6);
+        map.addLayer(layer_Meditemditerranne_6);
+        function pop_Atlantiquecentre_7(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Groupes AnimaL'] !== null ? autolinker.link(feature.properties['Groupes AnimaL'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Famille'] !== null ? autolinker.link(feature.properties['Famille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom scientifique'] !== null ? autolinker.link(feature.properties['Nom scientifique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom commun'] !== null ? autolinker.link(feature.properties['Nom commun'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Zone atlantique centre'] !== null ? autolinker.link(feature.properties['Zone atlantique centre'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['longitude'] !== null ? autolinker.link(feature.properties['longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['latitude'] !== null ? autolinker.link(feature.properties['latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distribution bathymetrique'] !== null ? autolinker.link(feature.properties['Distribution bathymetrique'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Regime alimentaire'] !== null ? autolinker.link(feature.properties['Regime alimentaire'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Taille'] !== null ? autolinker.link(feature.properties['Taille'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Engins de p�che'] !== null ? autolinker.link(feature.properties['Engins de p�che'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Habitat'] !== null ? autolinker.link(feature.properties['Habitat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Atlantiquecentre_7_0(feature) {
+            switch(String(feature.properties['Nom commun'])) {
+                default:
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(161,130,224,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Bar commun':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Chinchard commun':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade grise':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Dorade royale':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(15,206,34,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Loup de mer':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Maquereau commun':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pageot commun':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Pagre commun':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sardine commune':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Sole commune':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case 'Thon rouge':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+        rotationAngle: 0.0,
+        rotationOrigin: 'center center',
+        icon: L.icon({
+            iconUrl: 'markers/Atlantiquecentre_7.svg',
+            iconSize: [22.799999999999997, 22.799999999999997]
+        }),
+                interactive: true,
+            }
+                    break;
+                case '�':
+                    return {
+                pane: 'pane_Atlantiquecentre_7',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(144,103,206,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Atlantiquecentre_7');
+        map.getPane('pane_Atlantiquecentre_7').style.zIndex = 407;
+        map.getPane('pane_Atlantiquecentre_7').style['mix-blend-mode'] = 'normal';
+        var layer_Atlantiquecentre_7 = new L.geoJson(json_Atlantiquecentre_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Atlantiquecentre_7',
+            layerName: 'layer_Atlantiquecentre_7',
+            pane: 'pane_Atlantiquecentre_7',
+            onEachFeature: pop_Atlantiquecentre_7,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Atlantiquecentre_7_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Atlantiquecentre_7);
+        map.addLayer(layer_Atlantiquecentre_7);
+        function pop_LesporrtsduMaroc_8(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Region</th>\
+                        <td>' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Port</th>\
+                        <td>' + (feature.properties['Port'] !== null ? autolinker.link(feature.properties['Port'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Annee de creation</th>\
+                        <td>' + (feature.properties['Annee de creation'] !== null ? autolinker.link(feature.properties['Annee de creation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Capacite</th>\
+                        <td>' + (feature.properties['Capacite'] !== null ? autolinker.link(feature.properties['Capacite'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Trafic'] !== null ? autolinker.link(feature.properties['Trafic'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Impact'] !== null ? autolinker.link(feature.properties['Impact'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_LesporrtsduMaroc_8_0(feature) {
+            switch(String(feature.properties['Type'])) {
+                case 'Commerce':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(205,210,112,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Croisiere':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(109,239,95,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Militaire':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,110,181,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Passagers':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,132,115,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Peche':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(121,19,230,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Plaisance':
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(122,160,221,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_LesporrtsduMaroc_8',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(120,205,185,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_LesporrtsduMaroc_8');
+        map.getPane('pane_LesporrtsduMaroc_8').style.zIndex = 408;
+        map.getPane('pane_LesporrtsduMaroc_8').style['mix-blend-mode'] = 'normal';
+        var layer_LesporrtsduMaroc_8 = new L.geoJson(json_LesporrtsduMaroc_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_LesporrtsduMaroc_8',
+            layerName: 'layer_LesporrtsduMaroc_8',
+            pane: 'pane_LesporrtsduMaroc_8',
+            onEachFeature: pop_LesporrtsduMaroc_8,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_LesporrtsduMaroc_8_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_LesporrtsduMaroc_8);
+        map.addLayer(layer_LesporrtsduMaroc_8);
+        var overlaysTree = [
+            {label: 'Les porrts du Maroc<br /><table><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Commerce0.png" /></td><td>Commerce</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Croisiere1.png" /></td><td>Croisiere</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Militaire2.png" /></td><td>Militaire</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Passagers3.png" /></td><td>Passagers</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Peche4.png" /></td><td>Peche</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_Plaisance5.png" /></td><td>Plaisance</td></tr><tr><td style="text-align: center;"><img src="legend/LesporrtsduMaroc_8_6.png" /></td><td></td></tr></table>', layer: layer_LesporrtsduMaroc_8},
+            {label: 'Atlantique centre<br /><table><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Barcommun1.png" /></td><td>Bar commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Chinchardcommun2.png" /></td><td>Chinchard commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Doradegrise3.png" /></td><td>Dorade grise</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Doraderoyale4.png" /></td><td>Dorade royale</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Loupdemer5.png" /></td><td>Loup de mer</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Maquereaucommun6.png" /></td><td>Maquereau commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Pageotcommun7.png" /></td><td>Pageot commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Pagrecommun8.png" /></td><td>Pagre commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Sardinecommune9.png" /></td><td>Sardine commune</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Solecommune10.png" /></td><td>Sole commune</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_Thonrouge11.png" /></td><td>Thon rouge</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquecentre_7_12.png" /></td><td>�</td></tr></table>', layer: layer_Atlantiquecentre_7},
+            {label: 'Medite — mditerranne<br /><table><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Barcommun1.png" /></td><td>Bar commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Chinchardcommun2.png" /></td><td>Chinchard commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Doradegrise3.png" /></td><td>Dorade grise</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Doraderoyale4.png" /></td><td>Dorade royale</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Loupdemer5.png" /></td><td>Loup de mer</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Maquereaucommun6.png" /></td><td>Maquereau commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Merlucommun7.png" /></td><td>Merlu commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Pageotcommun8.png" /></td><td>Pageot commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Pagrecommun9.png" /></td><td>Pagre commun</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Sabreargente10.png" /></td><td>Sabre argente</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Sardinecommune11.png" /></td><td>Sardine commune</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Solecommune12.png" /></td><td>Sole commune</td></tr><tr><td style="text-align: center;"><img src="legend/Meditemditerranne_6_Thonrouge13.png" /></td><td>Thon rouge</td></tr></table>', layer: layer_Meditemditerranne_6},
+            {label: '<img src="legend/sudatlantique_sud_5.png" /> sud — atlantique_sud', layer: layer_sudatlantique_sud_5},
+            {label: 'Atlantique nord<br /><table><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Barcommun0.png" /></td><td>Bar commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Chinchardcommun1.png" /></td><td>Chinchard commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Doradegrise2.png" /></td><td>Dorade grise</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Doraderoyale3.png" /></td><td>Dorade royale</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Loupdemer4.png" /></td><td>Loup de mer</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Maquereaucommun5.png" /></td><td>Maquereau commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Pageotcommun6.png" /></td><td>Pageot commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Pagrecommun7.png" /></td><td>Pagre commun</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Sardinecommune8.png" /></td><td>Sardine commune</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Solecommune9.png" /></td><td>Sole commune</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_Thonrouge10.png" /></td><td>Thon rouge</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_11.png" /></td><td>�</td></tr><tr><td style="text-align: center;"><img src="legend/Atlantiquenord_4_12.png" /></td><td></td></tr></table>', layer: layer_Atlantiquenord_4},
+            {label: '<img src="legend/Zoneconomiqueexclusive_3.png" /> Zone économique exclusive', layer: layer_Zoneconomiqueexclusive_3},
+            {label: '<img src="legend/ZEE_2.png" /> ZEE', layer: layer_ZEE_2},
+            {label: '<img src="legend/REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1.png" /> REGION_MAROC_FINI-polygon — REGION_MAROC_FINI-polygon.shp', layer: layer_REGION_MAROC_FINIpolygonREGION_MAROC_FINIpolygonshp_1},
+            {label: "carte", layer: layer_carte_0},]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: true,
+        });
+        lay.addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"Zone atlantique nord": "int","Zone atlantique centre": "int","Zone mediterranee": "int","Zone atlantique sud": "int","Nom commun": "str","Type": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Zoneatlantiquenord = document.createElement("div");
+            div_Zoneatlantiquenord.id = "div_Zoneatlantiquenord";
+            div_Zoneatlantiquenord.className = "slider";
+            document.getElementById("menu").appendChild(div_Zoneatlantiquenord);
+            var lab_Zoneatlantiquenord = document.createElement('div');
+            lab_Zoneatlantiquenord.innerHTML  = 'Zone atlantique nord: <span id="val_Zoneatlantiquenord"></span>';
+            lab_Zoneatlantiquenord.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Zoneatlantiquenord);
+            var reset_Zoneatlantiquenord = document.createElement('div');
+            reset_Zoneatlantiquenord.innerHTML = 'clear filter';
+            reset_Zoneatlantiquenord.className = 'filterlabel';
+            lab_Zoneatlantiquenord.className = 'filterlabel';
+            reset_Zoneatlantiquenord.onclick = function() {
+                sel_Zoneatlantiquenord.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Zoneatlantiquenord);
+            var sel_Zoneatlantiquenord = document.getElementById('div_Zoneatlantiquenord');
+            noUiSlider.create(sel_Zoneatlantiquenord, {
+                connect: true,
+                start: [2, 3],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 2,
+                max: 3
+                }
+            });
+            sel_Zoneatlantiquenord.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Zoneatlantiquenord = document.getElementById('val_Zoneatlantiquenord');
+            val_Zoneatlantiquenord.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Zoneatlantiquecentre = document.createElement("div");
+            div_Zoneatlantiquecentre.id = "div_Zoneatlantiquecentre";
+            div_Zoneatlantiquecentre.className = "slider";
+            document.getElementById("menu").appendChild(div_Zoneatlantiquecentre);
+            var lab_Zoneatlantiquecentre = document.createElement('div');
+            lab_Zoneatlantiquecentre.innerHTML  = 'Zone atlantique centre: <span id="val_Zoneatlantiquecentre"></span>';
+            lab_Zoneatlantiquecentre.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Zoneatlantiquecentre);
+            var reset_Zoneatlantiquecentre = document.createElement('div');
+            reset_Zoneatlantiquecentre.innerHTML = 'clear filter';
+            reset_Zoneatlantiquecentre.className = 'filterlabel';
+            lab_Zoneatlantiquecentre.className = 'filterlabel';
+            reset_Zoneatlantiquecentre.onclick = function() {
+                sel_Zoneatlantiquecentre.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Zoneatlantiquecentre);
+            var sel_Zoneatlantiquecentre = document.getElementById('div_Zoneatlantiquecentre');
+            noUiSlider.create(sel_Zoneatlantiquecentre, {
+                connect: true,
+                start: [0, 3],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 0,
+                max: 3
+                }
+            });
+            sel_Zoneatlantiquecentre.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Zoneatlantiquecentre = document.getElementById('val_Zoneatlantiquecentre');
+            val_Zoneatlantiquecentre.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Zonemediterranee = document.createElement("div");
+            div_Zonemediterranee.id = "div_Zonemediterranee";
+            div_Zonemediterranee.className = "slider";
+            document.getElementById("menu").appendChild(div_Zonemediterranee);
+            var lab_Zonemediterranee = document.createElement('div');
+            lab_Zonemediterranee.innerHTML  = 'Zone mediterranee: <span id="val_Zonemediterranee"></span>';
+            lab_Zonemediterranee.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Zonemediterranee);
+            var reset_Zonemediterranee = document.createElement('div');
+            reset_Zonemediterranee.innerHTML = 'clear filter';
+            reset_Zonemediterranee.className = 'filterlabel';
+            lab_Zonemediterranee.className = 'filterlabel';
+            reset_Zonemediterranee.onclick = function() {
+                sel_Zonemediterranee.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Zonemediterranee);
+            var sel_Zonemediterranee = document.getElementById('div_Zonemediterranee');
+            noUiSlider.create(sel_Zonemediterranee, {
+                connect: true,
+                start: [1, 3],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 1,
+                max: 3
+                }
+            });
+            sel_Zonemediterranee.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Zonemediterranee = document.getElementById('val_Zonemediterranee');
+            val_Zonemediterranee.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Zoneatlantiquesud = document.createElement("div");
+            div_Zoneatlantiquesud.id = "div_Zoneatlantiquesud";
+            div_Zoneatlantiquesud.className = "slider";
+            document.getElementById("menu").appendChild(div_Zoneatlantiquesud);
+            var lab_Zoneatlantiquesud = document.createElement('div');
+            lab_Zoneatlantiquesud.innerHTML  = 'Zone atlantique sud: <span id="val_Zoneatlantiquesud"></span>';
+            lab_Zoneatlantiquesud.className = 'filterlabel';
+            document.getElementById("menu").appendChild(lab_Zoneatlantiquesud);
+            var reset_Zoneatlantiquesud = document.createElement('div');
+            reset_Zoneatlantiquesud.innerHTML = 'clear filter';
+            reset_Zoneatlantiquesud.className = 'filterlabel';
+            lab_Zoneatlantiquesud.className = 'filterlabel';
+            reset_Zoneatlantiquesud.onclick = function() {
+                sel_Zoneatlantiquesud.noUiSlider.reset();
+            };
+            document.getElementById("menu").appendChild(reset_Zoneatlantiquesud);
+            var sel_Zoneatlantiquesud = document.getElementById('div_Zoneatlantiquesud');
+            noUiSlider.create(sel_Zoneatlantiquesud, {
+                connect: true,
+                start: [0, 3],
+                step: 1,
+                format: wNumb({
+                    decimals: 0,
+                    }),
+                range: {
+                min: 0,
+                max: 3
+                }
+            });
+            sel_Zoneatlantiquesud.noUiSlider.on('update', function (values) {
+            filterVals =[];
+            for (value in values){
+            filterVals.push(parseInt(value))
+            }
+            val_Zoneatlantiquesud = document.getElementById('val_Zoneatlantiquesud');
+            val_Zoneatlantiquesud.innerHTML = values.join(' - ');
+                filterFunc()
+            });
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Nomcommun = document.createElement('div');
+            div_Nomcommun.id = "div_Nomcommun";
+            div_Nomcommun.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Nomcommun);
+            sel_Nomcommun = document.createElement('select');
+            sel_Nomcommun.multiple = true;
+            sel_Nomcommun.size = 10;
+            sel_Nomcommun.id = "sel_Nomcommun";
+            var Nomcommun_options_str = "<option value='' unselected></option>";
+            sel_Nomcommun.onchange = function(){filterFunc()};
+            Nomcommun_options_str  += '<option value="Bar commun">Bar commun</option>';
+            Nomcommun_options_str  += '<option value="Chinchard commun">Chinchard commun</option>';
+            Nomcommun_options_str  += '<option value="Dorade grise">Dorade grise</option>';
+            Nomcommun_options_str  += '<option value="Dorade royale">Dorade royale</option>';
+            Nomcommun_options_str  += '<option value="Loup de mer">Loup de mer</option>';
+            Nomcommun_options_str  += '<option value="Maquereau commun">Maquereau commun</option>';
+            Nomcommun_options_str  += '<option value="Merlu commun">Merlu commun</option>';
+            Nomcommun_options_str  += '<option value="Pageot commun">Pageot commun</option>';
+            Nomcommun_options_str  += '<option value="Pagre commun">Pagre commun</option>';
+            Nomcommun_options_str  += '<option value="Sabre argente">Sabre argente</option>';
+            Nomcommun_options_str  += '<option value="Sardine commune">Sardine commune</option>';
+            Nomcommun_options_str  += '<option value="Sole commune">Sole commune</option>';
+            Nomcommun_options_str  += '<option value="Thon rouge">Thon rouge</option>';
+            Nomcommun_options_str  += '<option value="�">�</option>';
+            sel_Nomcommun.innerHTML = Nomcommun_options_str;
+            div_Nomcommun.appendChild(sel_Nomcommun);
+            var lab_Nomcommun = document.createElement('div');
+            lab_Nomcommun.innerHTML = 'Nom commun';
+            lab_Nomcommun.className = 'filterlabel';
+            div_Nomcommun.appendChild(lab_Nomcommun);
+            var reset_Nomcommun = document.createElement('div');
+            reset_Nomcommun.innerHTML = 'clear filter';
+            reset_Nomcommun.className = 'filterlabel';
+            reset_Nomcommun.onclick = function() {
+                var options = document.getElementById("sel_Nomcommun").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Nomcommun.appendChild(reset_Nomcommun);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Type = document.createElement('div');
+            div_Type.id = "div_Type";
+            div_Type.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Type);
+            sel_Type = document.createElement('select');
+            sel_Type.multiple = true;
+            sel_Type.size = 6;
+            sel_Type.id = "sel_Type";
+            var Type_options_str = "<option value='' unselected></option>";
+            sel_Type.onchange = function(){filterFunc()};
+            Type_options_str  += '<option value="Commerce">Commerce</option>';
+            Type_options_str  += '<option value="Croisiere">Croisiere</option>';
+            Type_options_str  += '<option value="Militaire">Militaire</option>';
+            Type_options_str  += '<option value="Passagers">Passagers</option>';
+            Type_options_str  += '<option value="Peche">Peche</option>';
+            Type_options_str  += '<option value="Plaisance">Plaisance</option>';
+            sel_Type.innerHTML = Type_options_str;
+            div_Type.appendChild(sel_Type);
+            var lab_Type = document.createElement('div');
+            lab_Type.innerHTML = 'Type';
+            lab_Type.className = 'filterlabel';
+            div_Type.appendChild(lab_Type);
+            var reset_Type = document.createElement('div');
+            reset_Type.innerHTML = 'clear filter';
+            reset_Type.className = 'filterlabel';
+            reset_Type.onclick = function() {
+                var options = document.getElementById("sel_Type").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Type.appendChild(reset_Type);
+        </script>
+    </body>
+</html>
